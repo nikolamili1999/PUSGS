@@ -1,0 +1,139 @@
+{
+    "Routes": [
+        {
+            "DownstreamPathTemplate": "/api/users/login",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "UpstreamPathTemplate": "/login",
+            "UpstreamHttpMethod": [ "Post" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/users/login-google",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "UpstreamPathTemplate": "/login-google",
+            "UpstreamHttpMethod": [ "Post" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/users",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "UpstreamPathTemplate": "/register",
+            "UpstreamHttpMethod": [ "Post" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/users",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "UpstreamPathTemplate": "/users",
+            "UpstreamHttpMethod": [ "Put" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/users",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "UpstreamPathTemplate": "/users",
+            "UpstreamHttpMethod": [ "Get" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/users/sellers",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "UpstreamPathTemplate": "/users/sellers",
+            "UpstreamHttpMethod": [ "Get" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/users/sellers",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "UpstreamPathTemplate": "/users/sellers",
+            "UpstreamHttpMethod": [ "Post" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/users/sellers",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "UpstreamPathTemplate": "/users/sellers",
+            "UpstreamHttpMethod": [ "Put" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/users/image/me",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "UpstreamPathTemplate": "/users/image/me",
+            "UpstreamHttpMethod": [ "Get" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/users/image",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "UpstreamPathTemplate": "/users/image",
+            "UpstreamHttpMethod": [ "Get" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/users/image",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "UpstreamPathTemplate": "/users/image",
+            "UpstreamHttpMethod": [ "Post" ]
+        }
+    ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5000"
+  }
+}
