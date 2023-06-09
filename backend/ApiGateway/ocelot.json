@@ -131,6 +131,42 @@
             ],
             "UpstreamPathTemplate": "/users/image",
             "UpstreamHttpMethod": [ "Post" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/orders",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5030
+                }
+            ],
+            "UpstreamPathTemplate": "/orders",
+            "UpstreamHttpMethod": [ "Get" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/orders/waiting",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5030
+                }
+            ],
+            "UpstreamPathTemplate": "/orders/waiting",
+            "UpstreamHttpMethod": [ "Get" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/orders/{id}",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5030
+                }
+            ],
+            "UpstreamPathTemplate": "/orders/{id}",
+            "UpstreamHttpMethod": [ "Put" ]
         }
     ],
   "GlobalConfiguration": {
