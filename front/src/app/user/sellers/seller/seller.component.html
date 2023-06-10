@@ -1,0 +1,17 @@
+<p-toast></p-toast>
+<p-card header="{{seller?.firstName + ' ' + seller?.lastName}}" subheader="{{seller?.email}}" [style]="{width: '360px'}"
+    styleClass="p-card-shadow">
+    <ng-template pTemplate="header">
+        <img alt="Card" [src]="profileImageSrc">
+    </ng-template>
+    <p>
+        {{seller?.address}}
+    </p>
+    <div *ngIf="seller?.sellerStatus == 1">
+        <p-button label="Approve" icon="pi pi-check" (click)="approve()" [loading]="isLoadingApprove"></p-button>
+        <p-button label="Deny" icon="pi pi-times" (click)="deny()" [loading]="isLoadingDeny"
+            styleClass="p-button-secondary" [style]="{'margin-left': '.5em'}"></p-button>
+    </div>
+    <h4 *ngIf="seller.sellerStatus == 2">Approved</h4>
+    <h4 *ngIf="seller.sellerStatus == 3">Denied</h4>
+</p-card>

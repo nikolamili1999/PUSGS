@@ -1,0 +1,10 @@
+<h1>User that applied for seller</h1>
+<div>
+    <div class="sellers-list" *ngIf="sellers?.length > 0">
+        <app-seller class="seller" *ngFor="let seller of sellers" [userSeller]="seller"></app-seller>
+    </div>
+    <div *ngIf="sellers?.length == 0">
+        <h4>No sellers</h4>
+    </div>
+</div>
+<p-progressSpinner *ngIf="isLoading"></p-progressSpinner>
