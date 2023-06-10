@@ -12,6 +12,6 @@ namespace ProductApi.Interfaces
         Product UpdateProduct(int id, CreateUpdateProductDto productDto);
         void DeleteProduct(int id);
         List<Product> GetProducts(); 
-
+        void UpdateQuantity(int id, uint quantity);
     }
 }

@@ -1,18 +1,20 @@
 ﻿using AutoMapper;
 using Backend.Infrastructure;
-using Newtonsoft.Json;
 using OrderApi.Dto;
 using OrderApi.Interfaces;
 using OrderApi.Models;
 using ProductApi.Dto;
-using ProductApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace OrderApi.Services
 {
@@ -39,29 +41,37 @@ namespace OrderApi.Services
             try
             {
                 List<OrderDetail> orderDetailsList = new List<OrderDetail>();
+                var quantitiesUpdate = new List<UpdateQuantityDto>();
                 var price = 0;
                 foreach (var orderDetailsDto in orderDto.OrderDetails)
                 {
                     var orderDetails = _mapper.Map<OrderDetail>(orderDetailsDto);
-                    try
+                    using var client = new HttpClient();
+                    var uri = _remoteServiceBaseUrl;
+                    client.Timeout = TimeSpan.FromMinutes(30);
+                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, _remoteServiceBaseUrl + $"/{orderDetails.ProductId}");
+                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    var responseString = await client.SendAsync(request);
+                    var json = await responseString.Content.ReadAsStringAsync();
+                    var product = JsonConvert.DeserializeObject<ProductDto>(json);
+
+                    orderDetails.ProductName = product.Name;
+                    orderDetails.ProductPrice = product.Price;
+                    orderDetails.ProductSeller = product.Seller;
+                    if (orderDetails.Quantity > product.Quantity)
                     {
-                        using var client = new HttpClient();
-                        var uri = _remoteServiceBaseUrl;
-                        client.Timeout = TimeSpan.FromMinutes(30);
-                        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, _remoteServiceBaseUrl + $"/{orderDetails.ProductId}");
-                        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                        var responseString = await client.SendAsync(request);
-
-                        var product = JsonConvert.DeserializeObject<ProductDto>(await responseString.Content.ReadAsStringAsync());
-                        orderDetails.ProductName = product.Name;
-                        orderDetails.ProductPrice = product.Price;
-                        orderDetails.ProductSeller = product.Seller;
-                    }catch(Exception ex) {
-                        Console.WriteLine(ex.Message);
+                        throw new Exception($"Quantity is exceded for product {product.Name}");
                     }
-
+                    quantitiesUpdate.Add(new UpdateQuantityDto()
+                    {
+                        // new quantity
+                        Quantity = product.Quantity - orderDetails.Quantity,
+                        ProductId = orderDetails.ProductId,
+                    });
                     orderDetailsList.Add(orderDetails);
                 }
+                // update products quntities
+                await UpdateProductQuantitiesAsync(quantitiesUpdate, token);
 
                 var order = _mapper.Map<Order>(orderDto);
                 order.OrderDetails = null;
@@ -75,7 +85,6 @@ namespace OrderApi.Services
                 await _dbContext.OrderDetails.AddRangeAsync(orderDetailsList);
                 await _dbContext.SaveChangesAsync();
 
-
                 return _mapper.Map<OrderDto>(order);
             }
             catch (Exception ex)
@@ -85,6 +94,30 @@ namespace OrderApi.Services
             finally
             {
                 semaphoreSlim.Release();
+            }
+        }
+        /// <summary>
+        /// Updates product quantities
+        /// </summary>
+        /// <param name="updateQuantities">Object that holds new quantity values</param>
+        /// <param name="token">Auhtorization bearer token from user</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">Throws exception if request status code is not successfull</exception>
+        private async Task UpdateProductQuantitiesAsync(List<UpdateQuantityDto> updateQuantities, String token)
+        {
+            using var client = new HttpClient();
+            var uri = _remoteServiceBaseUrl;
+            client.Timeout = TimeSpan.FromMinutes(30);
+            var bodyJson = JsonConvert.SerializeObject(updateQuantities);
+            var stringContent = new StringContent(bodyJson, Encoding.UTF8, "application/json");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Patch, _remoteServiceBaseUrl + "/quantity");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            request.Content = stringContent;
+
+            var response = await client.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("Error occured during order creating. Try again later.");
             }
         }
 
@@ -116,6 +149,20 @@ namespace OrderApi.Services
         public List<OrderDto> GetOrdersBySeller(string sellerEmail)
         {
             return _mapper.Map<List<OrderDto>>(_dbContext.Orders.ToList().FindAll(i => i.Sellers.Contains(sellerEmail.ToLower())));
+        }
+
+        public void CancelOrder(int id)
+        {
+            lock (thisLock)
+            {
+                var order = _dbContext.Orders.Find(id);
+                if(order.TimeDeliveryExpected > DateTime.Now)
+                {
+                    throw new Exception("Order is delivered");
+                }
+                order.IsCancelled = true;
+                _dbContext.SaveChanges();
+            }
         }
     }
 }

@@ -84,6 +84,19 @@ namespace OrderApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpDelete("{id}/cancel")]
+        [Authorize(Roles = "User")]
+        public ActionResult CancelOrder(int id)
+        {
+            try
+            {
+                _orderService.CancelOrder(id);
+                return Ok();
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [NonAction]
         private string GetUserEmail()

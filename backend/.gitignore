@@ -363,3 +363,6 @@ MigrationBackup/
 FodyWeavers.xsd
 /ProductApi/ProductImages/*
 !/ProductApi/ProductImages
+
+/IdentityApi/ProfileImages*
+!/IdentityApi/ProfileImages

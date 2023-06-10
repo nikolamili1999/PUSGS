@@ -7,6 +7,7 @@ using ProductApi.Dto;
 using ProductApi.Infrastructure;
 using ProductApi.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -86,6 +87,17 @@ namespace ProductApi.Controllers
                 return Forbid("You cannot edit products that are not yours.");
             }
             _productService.DeleteProduct(id);
+            return Ok();
+        }
+
+        [HttpPatch("quantity")]
+        [Authorize]
+        public ActionResult UpdateQuantities(List<UpdateQuantityDto> updateQuantitiesDto)
+        {
+            updateQuantitiesDto.ForEach(i =>
+            {
+                _productService.UpdateQuantity(i.ProductId, i.Quantity);
+            });
             return Ok();
         }
 

@@ -18,6 +18,7 @@ namespace OrderApi.Models
         public DateTime TimeOrdered { get { return new DateTime(UTCTimeOrderCreated); } }
         public DateTime TimeDeliveryStarted { get { return new DateTime(UTCTimeDeliveryStarted); } }
         public DateTime TimeDeliveryExpected { get { return new DateTime(UTCTimeDeliveryStarted + UTCTimeDeliveryExpected); } }
+        public bool IsCancelled { get; set; } = false;
         /// <summary>
         /// Returns all sellers for this order
         /// </summary>

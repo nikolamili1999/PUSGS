@@ -87,5 +87,15 @@ namespace ProductApi.Services
                 return product;
             }
         }
+
+        public void UpdateQuantity(int id, uint quantity)
+        {
+            lock (thisLock)
+            {
+                var product = _dbContext.Products.Find(id);
+                product.Quantity = quantity;
+                _dbContext.SaveChanges();
+            }
+        }
     }
 }

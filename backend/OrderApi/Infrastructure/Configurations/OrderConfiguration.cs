@@ -16,6 +16,8 @@ namespace Backend.Infrastructure.Configurations
                    .IsRequired();
 
             builder.Property(s => s.UTCTimeOrderCreated).IsRequired();
+            builder.Property(s => s.UTCTimeDeliveryExpected).IsRequired();
+            builder.Property(s => s.IsCancelled).IsRequired();
 
             builder.HasMany<OrderDetail>(s => s.OrderDetails)
                    .WithOne(g => g.Order)
