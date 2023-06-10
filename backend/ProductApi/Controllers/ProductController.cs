@@ -39,9 +39,6 @@ namespace ProductApi.Controllers
             return Ok(_productService.GetProducts());
         }
 
-        //[HttpPut("{id}/quantity")]
-        //public ActionResult UpdateProductQuantity(int id, )
-
         [HttpPost]
         [Authorize(Roles = "Seller")]
         public async Task<ActionResult> AddProductAsync([FromForm] CreateUpdateProductDto productDto)
@@ -67,16 +64,15 @@ namespace ProductApi.Controllers
         //[Authorize]
         public async Task<IActionResult> GetProductImage(int id)
         {
-            var path = Path.Combine(_config["StoredFilesPath"], id + ".png");
-            //MemoryStream memory = new MemoryStream();
-            //using (FileStream stream = new FileStream(path, FileMode.Open))
-            //{
-            //    await stream.CopyToAsync(memory);
-            //}
-            //memory.Position = 0;
-
-            var image = System.IO.File.OpenRead(path);
-            return File(image, "image/png");
+            try
+            {
+                var path = Path.Combine(_config["StoredFilesPath"], id + ".png");
+                var image = System.IO.File.OpenRead(path);
+                return File(image, "image/png");
+            }catch (Exception ex)
+            {
+                return NotFound();
+            }
         }
 
         [HttpDelete("{id}")]

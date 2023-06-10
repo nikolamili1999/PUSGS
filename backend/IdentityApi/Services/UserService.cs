@@ -101,7 +101,7 @@ namespace IdentityApi.Services
             var tokeOptions = new JwtSecurityToken(
                 issuer: "http://localhost:5001", //url servera koji je izdao token
                 claims: claims, //claimovi
-                expires: DateTime.Now.AddMinutes(20), //vazenje tokena u minutama
+                expires: DateTime.Now.AddMinutes(60), //vazenje tokena u minutama
                 signingCredentials: signinCredentials //kredencijali za potpis
             );
             string tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);

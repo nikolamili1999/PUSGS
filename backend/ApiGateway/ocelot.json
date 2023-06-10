@@ -1,6 +1,78 @@
 {
     "Routes": [
         {
+            "DownstreamPathTemplate": "/api/product",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5010
+                }
+            ],
+            "UpstreamPathTemplate": "/product",
+            "UpstreamHttpMethod": [ "Get" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/product/{id}",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5010
+                }
+            ],
+            "UpstreamPathTemplate": "/product/{id}",
+            "UpstreamHttpMethod": [ "Get" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/product/{id}",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5010
+                }
+            ],
+            "UpstreamPathTemplate": "/product/{id}",
+            "UpstreamHttpMethod": [ "Put" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/product/{id}",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5010
+                }
+            ],
+            "UpstreamPathTemplate": "/product/{id}",
+            "UpstreamHttpMethod": [ "Delete" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/product/{id}/image",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5010
+                }
+            ],
+            "UpstreamPathTemplate": "/product/{id}/image",
+            "UpstreamHttpMethod": [ "Get" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/product",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5010
+                }
+            ],
+            "UpstreamPathTemplate": "/product",
+            "UpstreamHttpMethod": [ "Post" ]
+        },
+        {
             "DownstreamPathTemplate": "/api/users/login",
             "DownstreamScheme": "https",
             "DownstreamHostAndPorts": [
@@ -49,6 +121,54 @@
             "UpstreamHttpMethod": [ "Put" ]
         },
         {
+            "DownstreamPathTemplate": "/api/basket",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5020
+                }
+            ],
+            "UpstreamPathTemplate": "/basket",
+            "UpstreamHttpMethod": [ "Get" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/basket",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5020
+                }
+            ],
+            "UpstreamPathTemplate": "/basket",
+            "UpstreamHttpMethod": [ "Post" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/basket",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5020
+                }
+            ],
+            "UpstreamPathTemplate": "/basket",
+            "UpstreamHttpMethod": [ "Put" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/basket/checkout",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5020
+                }
+            ],
+            "UpstreamPathTemplate": "/basket/checkout",
+            "UpstreamHttpMethod": [ "Post" ]
+        },
+        {
             "DownstreamPathTemplate": "/api/users",
             "DownstreamScheme": "https",
             "DownstreamHostAndPorts": [
@@ -97,42 +217,6 @@
             "UpstreamHttpMethod": [ "Put" ]
         },
         {
-            "DownstreamPathTemplate": "/api/users/image/me",
-            "DownstreamScheme": "https",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5001
-                }
-            ],
-            "UpstreamPathTemplate": "/users/image/me",
-            "UpstreamHttpMethod": [ "Get" ]
-        },
-        {
-            "DownstreamPathTemplate": "/api/users/image",
-            "DownstreamScheme": "https",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5001
-                }
-            ],
-            "UpstreamPathTemplate": "/users/image",
-            "UpstreamHttpMethod": [ "Get" ]
-        },
-        {
-            "DownstreamPathTemplate": "/api/users/image",
-            "DownstreamScheme": "https",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5001
-                }
-            ],
-            "UpstreamPathTemplate": "/users/image",
-            "UpstreamHttpMethod": [ "Post" ]
-        },
-        {
             "DownstreamPathTemplate": "/api/orders",
             "DownstreamScheme": "https",
             "DownstreamHostAndPorts": [
@@ -167,6 +251,42 @@
             ],
             "UpstreamPathTemplate": "/orders/{id}",
             "UpstreamHttpMethod": [ "Put" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/users/image/me",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "UpstreamPathTemplate": "/users/image/me",
+            "UpstreamHttpMethod": [ "Get" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/users/image",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "UpstreamPathTemplate": "/users/image",
+            "UpstreamHttpMethod": [ "Get" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/users/image",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "UpstreamPathTemplate": "/users/image",
+            "UpstreamHttpMethod": [ "Post" ]
         }
     ],
   "GlobalConfiguration": {
