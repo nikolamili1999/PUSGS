@@ -11,6 +11,6 @@ namespace OrderApi.Interfaces
         List<OrderDto> GetOrdersByUser(string userEmail);
         List<OrderDto> GetOrdersBySeller(string sellerEmail);
         OrderDto GetOrder(int id);
-        void CancelOrder(int id);
+        public async Task CancelOrder(int id, string token)
     }
 }

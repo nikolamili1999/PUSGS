@@ -25,7 +25,7 @@ export class OrderListComponent implements OnInit {
           this.orders = data.filter(i => i.utcTimeDeliveryExpected != 0 && i.utcTimeDeliveryExpected <= new Date().getTime());
         }
         if (this.filter == 'active') {
-          this.orders = data.filter(i => (i.utcTimeDeliveryExpected != 0 && i.utcTimeDeliveryExpected > new Date().getTime()) || (i.utcTimeDeliveryExpected == 0));
+          this.orders = data.filter(i => i.utcTimeDeliveryExpected != 0 && i.utcTimeDeliveryExpected > new Date().getTime());
         }
       }
     )

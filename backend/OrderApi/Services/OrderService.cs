@@ -46,14 +46,7 @@ namespace OrderApi.Services
                 foreach (var orderDetailsDto in orderDto.OrderDetails)
                 {
                     var orderDetails = _mapper.Map<OrderDetail>(orderDetailsDto);
-                    using var client = new HttpClient();
-                    var uri = _remoteServiceBaseUrl;
-                    client.Timeout = TimeSpan.FromMinutes(30);
-                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, _remoteServiceBaseUrl + $"/{orderDetails.ProductId}");
-                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                    var responseString = await client.SendAsync(request);
-                    var json = await responseString.Content.ReadAsStringAsync();
-                    var product = JsonConvert.DeserializeObject<ProductDto>(json);
+                    var product = await GetProduct(orderDetails.ProductId, token);
 
                     orderDetails.ProductName = product.Name;
                     orderDetails.ProductPrice = product.Price;
@@ -96,6 +89,20 @@ namespace OrderApi.Services
                 semaphoreSlim.Release();
             }
         }
+
+        private async Task<ProductDto> GetProduct(int id, string token)
+        {
+            using var client = new HttpClient();
+            var uri = _remoteServiceBaseUrl;
+            client.Timeout = TimeSpan.FromMinutes(30);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, _remoteServiceBaseUrl + $"/{id}");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var responseString = await client.SendAsync(request);
+            var json = await responseString.Content.ReadAsStringAsync();
+            var product = JsonConvert.DeserializeObject<ProductDto>(json);
+            return product;
+        }
+
         /// <summary>
         /// Updates product quantities
         /// </summary>
@@ -151,17 +158,39 @@ namespace OrderApi.Services
             return _mapper.Map<List<OrderDto>>(_dbContext.Orders.ToList().FindAll(i => i.Sellers.Contains(sellerEmail.ToLower())));
         }
 
-        public void CancelOrder(int id)
+        public async Task CancelOrder(int id, string token)
         {
-            lock (thisLock)
+            await semaphoreSlim.WaitAsync();
+            try
             {
                 var order = _dbContext.Orders.Find(id);
                 if(order.TimeDeliveryExpected > DateTime.Now)
                 {
                     throw new Exception("Order is delivered");
                 }
+                var quantitiesUpdate = new List<UpdateQuantityDto>();
+                foreach(var orderDetails in order.OrderDetails)
+                {
+                    var product = await GetProduct(orderDetails.ProductId, token);
+                    quantitiesUpdate.Add(new UpdateQuantityDto()
+                    {
+                        ProductId = orderDetails.ProductId,
+                        Quantity = orderDetails.Quantity + product.Quantity,
+                    });
+                }
+                // update products quntities
+                // return it to previous state
+                await UpdateProductQuantitiesAsync(quantitiesUpdate, token);
                 order.IsCancelled = true;
                 _dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                semaphoreSlim.Release();
             }
         }
     }

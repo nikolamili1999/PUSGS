@@ -86,11 +86,18 @@ namespace OrderApi.Controllers
         }
         [HttpDelete("{id}/cancel")]
         [Authorize(Roles = "User")]
-        public ActionResult CancelOrder(int id)
+        public async Task<ActionResult> CancelOrder(int id)
         {
             try
             {
-                _orderService.CancelOrder(id);
+                var order = _orderService.GetOrder(id);
+                var user = GetUserEmail();
+                if(order.Customer.ToLower() != user.ToLower())
+                {
+                    throw new Exception("You cannot cancel order that is not yours");
+                }
+                var _bearer_token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
+                await _orderService.CancelOrder(id, _bearer_token);
                 return Ok();
             }catch(Exception ex)
             {
