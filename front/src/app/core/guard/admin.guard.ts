@@ -7,6 +7,10 @@ import {JwtHelperService} from '@auth0/angular-jwt';
   providedIn: 'root'
 })
 
+/**
+ * Proverava da li je trenutni korsnik ima ulogu admina i da li je token koji se uskladisten validan
+ * tj. da li je istekao
+ */
 export class AdminGuard implements CanActivate {
   constructor(private router: Router, private helper:JwtHelperService) { }
 

@@ -11,6 +11,9 @@ export class AuthInterceptor implements HttpInterceptor {
 
     }
 
+    // Prestece http zahteve i na svaki dodaje token
+    // U slucaju da je odgovor na zahtev 401 (tj. da je pristup nedozvoljne) korisnika
+    // cemo izlogovati odnosno obrisacemo token i proslediti ga na stranicu za login
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
         if (localStorage.getItem('token') != null) {

@@ -21,12 +21,17 @@ export class ProductComponent implements OnInit {
     this.imageUrl = environment.serverUrl + '/product/' + product.id + "/image";
   }
 
+  /**
+   * Izlazni dogadjaj koji obavestava roditeljsku komponentu da zelimo da izbrisemo proizvod
+   */
   @Output() onProductDeleted: EventEmitter<number> = new EventEmitter();
+  /**
+   * Izlazni dogadjaj koji obavestava roditeljsku komponentu da zelimo da izmenimo proizvod
+   */
   @Output() onProductUpdate: EventEmitter<Product> = new EventEmitter();
 
   product: Product;
   imageUrl: String;
-  displayModal: boolean = false;
 
   role = roleGetter();
 
@@ -37,20 +42,28 @@ export class ProductComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Dodaje proizvod u korpu
+   */
   addToBasket() {
     let item = new BasketItem();
     item.productId = this.product.id;
     item.quantity = 1;
     this.basketService.addToBasket(item).subscribe(
       data => {
+        // prikaz toast-a u gornjem desnom uglu
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product added to basket:)' });
       },
       error => {
+        // prikaz toast-a u gornjem desnom uglu
         this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message });
       }
     )
   }
 
+  /**
+   * Salje dogadjaj koji zahteva brisanje proizvoda
+   */
   deleteProduct() {
     this.productService.deleteProduct(this.product.id).subscribe(
       data => {
@@ -63,6 +76,9 @@ export class ProductComponent implements OnInit {
     )
   }
 
+  /**
+   * Salje dogadjaj koji zahteva izmenu proizvoda
+   */
   editProduct() {
     this.onProductUpdate.emit(this.product);
   }

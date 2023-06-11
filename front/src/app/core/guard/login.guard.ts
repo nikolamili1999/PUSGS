@@ -6,7 +6,7 @@ import {JwtHelperService} from '@auth0/angular-jwt';
 @Injectable({
   providedIn: 'root'
 })
-
+// guard koji sluzi za proveru da li je korisnik ulogovan ili nije tj. da li ima token ili nema
 export class LoginGuard implements CanActivate {
   constructor(private router: Router, private helper:JwtHelperService) {}
   canActivate(

@@ -67,10 +67,11 @@ namespace OrderApi
                 });
             });
 
-
+            // Injektovanje db context-a
             services.AddDbContext<OrdersDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
-
+            // dodavanje autorizacije tj. kada se doda [Authorize] iznad zahteva da se proverava
+            // da li je korisnik poslao jwt token
             services.AddAuthentication(opt => {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -88,14 +89,16 @@ namespace OrderApi
                };
            });
 
+            // kreairanje mapera i injektovanje ka singleton-a
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfile());
             });
-
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
+            // Injektovanje http client-a koji se koristi za dobavljanje product-ata
             services.AddHttpClient<IOrderService, OrderService>();
+            // Inketovanje order servisa
             services.AddScoped<IOrderService, OrderService>();
         }
 

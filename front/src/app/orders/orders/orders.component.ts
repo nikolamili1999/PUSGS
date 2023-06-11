@@ -8,16 +8,8 @@ import { AuthService } from 'src/app/Shared/services/auth.service';
   styleUrls: ['./orders.component.scss']
 })
 export class OrdersComponent implements OnInit {
-  
-
-  role: string = "";
 
   constructor(private authService: AuthService) {
-    this.authService.roleStateObservable.subscribe(
-      data => {
-        this.role = data;
-      }
-    )
    }
 
   ngOnInit(): void {

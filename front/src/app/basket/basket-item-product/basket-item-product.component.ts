@@ -13,7 +13,7 @@ export class BasketItemProductComponent implements OnInit {
   product: Product
   imageUrl;
   @Input() set productId(value: number) {
-
+    // url slike kreiramo na osnovu product id-a
     this.imageUrl = environment.serverUrl + '/product/' + value + "/image";
     this.productService.getProduct(value).subscribe(
       data => {

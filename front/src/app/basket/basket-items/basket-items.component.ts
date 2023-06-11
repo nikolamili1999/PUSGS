@@ -19,13 +19,16 @@ export class BasketItemsComponent implements OnInit {
   isUpdating = false;
 
   constructor(private basketService: BasketService, private messageService: MessageService, private router: Router, private productService: ProductService) {
-    
-   }
+
+  }
 
   ngOnInit(): void {
   }
-
-  removeItem(item: BasketItem){
+  /**
+   * Brisanje proizvoda iz korpe
+   * @param item proizvod koji zelimo da izbrisemo iz korpe
+   */
+  removeItem(item: BasketItem) {
     const index = this.basket.basketItems.indexOf(item);
     if (index > -1) { // only splice array when item is found
       this.basket.basketItems.splice(index, 1); // 2nd parameter means remove one item only
@@ -33,25 +36,31 @@ export class BasketItemsComponent implements OnInit {
     this.updateTotal();
   }
 
-  update(){
+  /**
+   * Postavljanje nove vrednosti korpe tj. update postojece korpe
+   */
+  update() {
     this.isUpdating = true;
     this.basketService.setBasket(this.basket).subscribe(
       data => {
-        this.messageService.add({severity:'success', summary: 'Success', detail: 'Basket successfully updated.'});
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Basket successfully updated.' });
         this.isUpdating = false;
         this.updateTotal();
       },
       error => {
         this.isUpdating = false;
-        this.messageService.add({severity:'error', summary: 'Error', detail: error.error.message});
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message });
       }
     )
   }
 
-  updateTotal(){
+  /**
+   * Osvezavanje vrednosti ukupne cene svih artikala u korpi
+   */
+  updateTotal() {
     let sum = 0;
     this.basket.basketItems.forEach(i => {
-      sum += i.product?.price * i.quantity 
+      sum += i.product?.price * i.quantity
     })
     this.basketService.totalObservable.next(sum);
   }

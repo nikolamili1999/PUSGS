@@ -15,6 +15,17 @@ export class BasketComponent implements OnInit {
   total: number = 0;
 
   constructor(private basketService: BasketService, private router: Router, private productService: ProductService) { 
+    this.loadBasket();
+  }
+
+  ngOnInit(): void {
+  }
+
+  /**
+   * Ucitava vrednosti trenutne korpe i proizvoda koji se nalaze u njoj i istovremeno osvezava
+   * ukupnu sumu svih artikala u korpi
+   */
+  loadBasket(){
     this.basketService.getBasket().subscribe(
       data => {
         data.basketItems.forEach(item => {
@@ -31,11 +42,6 @@ export class BasketComponent implements OnInit {
       }
     )
   }
-
-  ngOnInit(): void {
-  }
-
-  
 
   updateTotal(){
     this.basketService.totalObservable.next(this.total);

@@ -79,7 +79,7 @@ namespace BasketApi.Controllers
                 var basket = _basketService.GetBasket(email); 
                 var _bearer_token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
                 // send message to order api
-
+                // saljemo zahtev za kreiranje porudzbine na order api
                 var orderDto = await _orderService.CreateOrder(basket, dto, _bearer_token);
                 
                 return Ok(orderDto);

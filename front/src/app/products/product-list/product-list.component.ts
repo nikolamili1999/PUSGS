@@ -18,9 +18,19 @@ export class ProductListComponent implements OnInit {
 
   role = this.authService.roleStateObservable.value;
 
+  /**
+   * Flag koji korisnimo oznacava da li je prikazan dijalog za dodavanje/izmenu proizvoda
+   */
   displayModal: boolean;
+  /**
+   * Ovde skladistimo trenutno selektovan fajl slike
+   */
   productFile: any;
+  /**
+   * Forma koja cuva polja neophodna za dodavnje/izmenu proizvoda
+   */
   addForm = new FormGroup({
+    // id je neophodan samo za izmenu proizvoda(prilikom dodavanja nije poznat)
     id: new FormControl(0),
     name: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]),
     description: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(500)]),
@@ -28,6 +38,9 @@ export class ProductListComponent implements OnInit {
     quantity: new FormControl(0, [Validators.required, Validators.min(0)]),
   });
   isAdding = false;
+  /**
+   * Flag koji oznacava da li izmenjujemo proizvod ili ga dodajemo
+   */
   isEditing = false;
   constructor(private productService: ProductService, private messageService: MessageService, private authService: AuthService) {
     this.loadProducts();
@@ -41,6 +54,9 @@ export class ProductListComponent implements OnInit {
     )
   }
 
+  /**
+   * Ucitava sve dostupne proizvode
+   */
   loadProducts() {
     this.productService.getProducts().subscribe(
       data => {
@@ -53,6 +69,9 @@ export class ProductListComponent implements OnInit {
     )
   }
 
+  /**
+   * Prikazuje dialog namenjen za dodavanje novom proizvoda
+   */
   showAddDialog() {
     this.addForm.setValue(
       {
@@ -66,10 +85,17 @@ export class ProductListComponent implements OnInit {
     this.isEditing = false;
     this.displayModal = true;
   }
+  /**
+   * Handler koji prihvata izabranu sliku
+   * @param event nova fotografija
+   */
   onSelectImage(event) {
     this.productFile = event.currentFiles[0];
   }
 
+  /**
+   * Dodavanje novog proizvoda
+   */
   addProduct() {
     if (this.addForm.valid) {
       this.isAdding = true;
@@ -102,6 +128,9 @@ export class ProductListComponent implements OnInit {
     }
   }
 
+  /**
+   * Izmenjuje proizvod sa zadatim vrednostima u formi
+   */
   updateProduct() {
     if (this.addForm.valid) {
       this.isAdding = true;
@@ -133,10 +162,18 @@ export class ProductListComponent implements OnInit {
     }
   }
 
+  /**
+   * Handler za slucaj kada se proizvod izbrise
+   * @param productId id proizvoda
+   */
   onProductDeleted(productId: number) {
     this.deleteProductFromList(productId);
   }
 
+  /**
+   * Proizvod sa zadatim id-em brisemo sa liste proizvoda
+   * @param productId id proizvoda koji je obrisan
+   */
   deleteProductFromList(productId: number) {
     const index: number = this.products.findIndex(i => i.id == productId);
     if (index !== -1) {
@@ -144,6 +181,11 @@ export class ProductListComponent implements OnInit {
     }
   }
 
+  /**
+   * Handler koji obradjuje zahtev za izmenu proizvoda tj. otvara dijalog za izmenu i popunjava formu sa podacima
+   * vezanim za proizvod
+   * @param product proizvod koji treba izmeniti
+   */
   onProductEdit(product: Product) {
     console.log(product);
     this.isEditing = true;

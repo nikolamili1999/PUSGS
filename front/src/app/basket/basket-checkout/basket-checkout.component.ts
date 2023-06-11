@@ -18,6 +18,9 @@ export class BasketCheckoutComponent implements OnInit {
 
   isSending = false;
 
+  /**
+   * Forma koja sadrzi adresu i komentar neophodni za kreiranje nove porudzbine
+   */
   checkoutForm = new FormGroup({
     address: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(70)]),
     comment: new FormControl('', [ Validators.minLength(1), Validators.maxLength(100)]),
@@ -33,6 +36,10 @@ export class BasketCheckoutComponent implements OnInit {
     )
   }
 
+  /**
+   * Kreiranje nove porudzbine na osnovu trenutke korpe(koja se skladisti na serveru)
+   * i podataka unetih u formu(adrese i komentara)
+   */
   checkout(){
     this.isSending = true;
     this.basketService.checkout(this.checkoutForm.value).subscribe(

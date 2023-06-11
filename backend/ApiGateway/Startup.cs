@@ -19,6 +19,7 @@ namespace ApiGateway
         public IConfiguration OcelotConfiguration { get; }
         public Startup(Microsoft.Extensions.Hosting.IHostingEnvironment env)
         {
+            // oznacanje da ocelot konfiguracija se nalazi u ocelot.json
             var builder = new Microsoft.Extensions.Configuration.ConfigurationBuilder();
             builder.SetBasePath(env.ContentRootPath)
                    //add configuration.json  
@@ -39,6 +40,7 @@ namespace ApiGateway
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiGateway", Version = "v1" });
             });
+            // dodavanje ocelot konfiguracije
             services.AddOcelot(OcelotConfiguration);
 
             services.AddCors(options =>
@@ -55,8 +57,10 @@ namespace ApiGateway
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+            // konfigurisanje logovanja
             loggerFactory.AddNLog();
             loggerFactory.ConfigureNLog("nlog.config");
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -75,7 +79,7 @@ namespace ApiGateway
             {
                 endpoints.MapControllers();
             });
-
+            // pokretanje ocelot-a koji vrsi prosledjivanje zahteva ka mikroservisima
             app.UseOcelot().Wait();
         }
     }

@@ -11,6 +11,10 @@ export class OrdersService {
 
   constructor(private http: HttpClient) { }
 
+  /**
+   * Vraca sve porudzbine dostupne korisniku na uvid u zavisnosti od uloge
+   * @returns porudzbine
+   */
   getOrders(): Observable<Order[]> {
     return this.http.get<Order[]>(environment.serverUrl + "/orders");
   }

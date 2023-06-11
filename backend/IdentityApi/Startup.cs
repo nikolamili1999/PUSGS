@@ -73,7 +73,7 @@ namespace IdentityApi
                 });
             });
 
-
+            // injektovanje db context-a
             services.AddDbContext<IdentityDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
 
@@ -100,9 +100,10 @@ namespace IdentityApi
             {
                 mc.AddProfile(new MappingProfile());
             });
-
+            // Injektovanje mapera
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
+            // Injektovanje user servisa i email sender-a(zaduzen za slanje mejlova)
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmailSender, EmailSender>();
         }

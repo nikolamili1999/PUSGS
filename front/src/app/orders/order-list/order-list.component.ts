@@ -15,8 +15,15 @@ export class OrderListComponent implements OnInit {
     console.log(this.filter);
     this.loadData();
   }
+  /**
+   * Filter na osnovu kog cemo da filtriramo porudzbine
+   * Moze biti 'active' i 'history'
+   */
   filter: string;
 
+  /**
+   * Ucivata sve porudzbine i nakon uspesnog dobaljanja filtira ih
+   */
   loadData() {
     this.orderService.getOrders().subscribe(
       data => {
@@ -30,7 +37,9 @@ export class OrderListComponent implements OnInit {
       }
     )
   }
-
+  /**
+   * Lista svih porudzbina koje se prikazuju korisniku
+   */
   orders: Order[] = [];
   constructor(private orderService: OrdersService, private eventService: EventService) {
   }

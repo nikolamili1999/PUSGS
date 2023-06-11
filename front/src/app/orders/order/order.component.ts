@@ -17,9 +17,16 @@ import { OrdersService } from '../shared/orders.service';
 })
 export class OrderComponent implements OnInit {
 
+  /**
+   * Subscriptija pretpljacena na tajmer
+   */
   subscription: Subscription;
 
-
+  /**
+   * Pokrece timer koji svaki sekund osvezava preostalo vreme do dostave
+   * Kada preostalo vrece dodje do 0 timer se zaustavlja
+   * @param duration preostalo vreme dostave (U sekundama)
+   */
   startTimer(duration: number) {
     const source = timer(0, 1000);
     this.subscription = source.subscribe(val => {
@@ -69,5 +76,8 @@ export class OrderComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Otkazujemo porudzbinu
+   */
   cancelOrder() { }
 }

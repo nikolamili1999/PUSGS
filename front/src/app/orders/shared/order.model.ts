@@ -1,5 +1,8 @@
 import { OrderItem } from "./order-item.model";
 
+/**
+ * Cuva podatke o porudzbini
+ */
 export class Order {
     id: number;
     customerUsername: string;

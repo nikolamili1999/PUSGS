@@ -49,7 +49,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { GoogleLoginProvider } from 'angularx-social-login';
 import { JwtModule } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
-
+// vraca trenutnu ulogu korisnika
 export function roleGetter() {
   return localStorage.getItem('role');
 }
@@ -57,6 +57,7 @@ export function roleGetter() {
 function countdownConfigFactory(): CountdownConfig {
   return { format: `mm:ss` };
 }
+// vraca trenutni jwt token
 export function tokenGetter() {
   return localStorage.getItem("token");
 }
@@ -121,6 +122,7 @@ export function tokenGetter() {
     )
   ],
   providers: [
+    // podesavanje interseptora
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
@@ -128,6 +130,7 @@ export function tokenGetter() {
     },
     { provide: CountdownGlobalConfig, useFactory: countdownConfigFactory },
     {
+      // podesavanje google social login-a
       provide: 'SocialAuthServiceConfig',
       useValue: {
         autoLogin: true,
